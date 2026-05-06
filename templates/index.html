@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruralize - Impacto Social UFRPE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Cores extraídas do Manual de Marca UFRPE (Pág. 9) */
+            --ufrpe-navy: #1E2B4F; /* R:30 G:43 B:79 */
+            --ufrpe-gold: #F9B233; /* R:249 G:178 B:51 */
+            --ufrpe-white: #FFFFFF;
+        }
+        
+        body {
+            font-family: 'Inter', 'Gill Sans', 'Gill Sans MT', sans-serif;
+            background-color: #F8F9FA;
+        }
+
+        .text-navy { color: var(--ufrpe-navy); }
+        .bg-navy { background-color: var(--ufrpe-navy); }
+        .text-gold { color: var(--ufrpe-gold); }
+        .bg-gold { background-color: var(--ufrpe-gold); }
+        .border-gold { border-color: var(--ufrpe-gold); }
+        
+        .nav-link.active {
+            color: var(--ufrpe-navy);
+            border-bottom: 3px solid var(--ufrpe-gold);
+        }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        /* Estilo para botões institucionais */
+        .btn-primary {
+            background-color: var(--ufrpe-navy);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #2D3E6B;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(30, 43, 79, 0.3);
+        }
+
+        /* Badge design */
+        .badge-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+            border: 1px solid rgba(30, 43, 79, 0.1);
+        }
+
+        /* Progress bar */
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--ufrpe-navy), var(--ufrpe-gold));
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navegação Superior -->
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-md border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-18 items-center py-3">
+                <!-- Logo Ruralize (Inspirado no Brasão UFRPE) -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="showTab('landing')">
+                    <div class="bg-navy p-2 rounded-xl border-2 border-gold text-gold shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 21 21 21"/><path d="M12 21v-4"/><path d="M5 21v-4"/><circle cx="12" cy="10" r="3"/></svg>
+                    </div>
+                    <div class="flex flex-col leading-none">
+                        <span class="font-black text-2xl tracking-tighter text-navy uppercase">Ruralize</span>
+                    </div>
+                </div>
+
+                <!-- Menu -->
+                <div class="hidden md:flex items-center gap-10">
+                    <button onclick="showTab('landing')" id="nav-landing" class="nav-link active text-sm font-black uppercase tracking-widest transition-all">Início</button>
+                    <button onclick="showTab('projects')" id="nav-projects" class="nav-link text-gray-400 hover:text-navy text-sm font-black uppercase tracking-widest transition-all">Projetos</button>
+                    <button onclick="abrirModalAuth()" id="btn-login" class="btn-primary px-8 py-3 rounded-2xl text-xs font-black uppercase tracking-[0.2em]">Entrar</button>
+                    
+                    <!-- Perfil Logado (Roberto Carlos) -->
+                    <button onclick="showTab('dashboard')" id="btn-profile" class="hidden flex items-center gap-3 bg-gray-50 border border-gray-200 px-4 py-2 rounded-2xl hover:bg-white transition-all group">
+                        <div class="w-8 h-8 bg-gold rounded-lg flex items-center justify-center text-navy font-black text-xs">RC</div>
+                        <span class="text-navy font-black text-xs uppercase tracking-widest">Meu Ruralize</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        
+        <!-- SECÇÃO: LANDING PAGE -->
+        <div id="landing" class="tab-content active animate-in fade-in duration-1000">
+            <!-- Hero Section -->
+            <section class="relative py-28 bg-white overflow-hidden">
+                <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-20 items-center">
+                    <div>
+                        <div class="inline-flex items-center gap-3 bg-navy/5 px-5 py-2 rounded-full mb-10">
+                            <span class="bg-gold w-2 h-2 rounded-full animate-pulse"></span>
+                            <span class="text-[11px] font-black text-navy uppercase tracking-[0.3em]">Conectando a Rural à Sociedade</span>
+                        </div>
+                        <h1 class="text-7xl font-black text-navy mb-8 leading-[0.85] tracking-tighter">
+                            Semeie <br>o seu <span class="text-gold">Futuro.</span>
+                        </h1>
+                        <p class="text-gray-500 text-xl mb-12 max-w-md font-medium leading-relaxed">
+                            A plataforma oficial de engajamento social da UFRPE. Transforme o seu conhecimento em impacto real.
+                        </p>
+                        <div class="flex flex-wrap gap-5">
+                            <button onclick="showTab('projects')" class="btn-primary px-12 py-6 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] shadow-xl">Ver Projetos</button>
+                            <button class="bg-white text-navy border-2 border-navy/10 px-12 py-6 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] hover:border-gold transition-all">Como Funciona</button>
+                        </div>
+                    </div>
+                    <div class="hidden md:block relative">
+                        <div class="absolute -top-10 -right-10 w-96 h-96 bg-gold/10 rounded-full blur-[120px]"></div>
+                        <div class="relative z-10 border-[12px] border-white p-2 rounded-[3rem] bg-white shadow-2xl overflow-hidden transform rotate-3">
+                            <img src="https://wordpress-cms-revista-prod-assets.quero.space/legacy_posts/post_images/28284/0eadbe366b196c78c5dec3fe34d7064715ac3204.png?1584627212" class="rounded-[2.5rem]" alt="Voluntariado Ruralize">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- SECÇÃO: CATÁLOGO -->
+        <div id="projects" class="tab-content py-20 max-w-7xl mx-auto px-4">
+            <header class="mb-20 text-center">
+                <h2 class="text-5xl font-black text-navy mb-4 tracking-tighter uppercase">Oportunidades de Impacto</h2>
+                <div class="w-24 h-2 bg-gold mx-auto rounded-full"></div>
+            </header>
+            
+            <div class="grid md:grid-cols-4 gap-10" id="catalog-list">
+                <!-- Conteúdo gerado dinamicamente pelo script -->
+            </div>
+        </div>
+
+        <!-- SECÇÃO: DASHBOARD (ROBERTO CARLOS) -->
+        <div id="dashboard" class="tab-content py-20 max-w-7xl mx-auto px-4">
+            <div class="grid lg:grid-cols-12 gap-12">
+                
+                <!-- Sidebar Perfil -->
+                <div class="lg:col-span-4 space-y-10">
+                    <div class="bg-white rounded-[2.5rem] p-12 border border-gray-100 shadow-2xl text-center relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-36 bg-navy"></div>
+                        <div class="relative z-10">
+                            <!-- Avatar -->
+                            <div class="w-32 h-32 bg-gold rounded-[2.5rem] mx-auto border-8 border-white flex items-center justify-center text-4xl font-black text-navy shadow-xl mb-8" id="usuario-iniciais">
+                                RC
+                            </div>
+                            <h2 class="text-3xl font-black text-navy tracking-tight uppercase mb-2" id="usuario-nome">Roberto Carlos</h2>
+                            <p class="text-gray-400 font-bold text-[11px] uppercase tracking-[0.3em] mb-12" id="usuario-patente">Membro Ruralize Bronze</p>
+                            
+                            <!-- Gamificação (Requisito RF05) -->
+                            <div class="bg-gray-50 p-8 rounded-[2rem] space-y-6">
+                                <div class="flex justify-between text-xs font-black uppercase text-gray-500 tracking-widest">
+                                    <span id="usuario-nivel">Nível 3</span>
+                                    <span class="text-navy" id="usuario-xp">350 / 500 XP</span>
+                                </div>
+                                <div class="w-full h-5 bg-gray-200 rounded-full p-1 shadow-inner">
+                                    <div class="h-full progress-bar-fill rounded-full shadow-sm" id="progress-bar" style="width: 70%"></div>
+                                </div>
+                                <p class="text-[10px] font-bold text-gray-400 uppercase italic" id="usuario-xp-faltante">Faltam 150 XP para o Nível 4</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Badges (Requisito RF06 - Termo Badge solicitado) -->
+                    <div class="bg-white rounded-[2.5rem] p-10 border border-gray-100 shadow-sm">
+                        <div class="flex justify-between items-center mb-10">
+                            <h3 class="font-black text-navy text-xs uppercase tracking-[0.3em]">Minhas Badges</h3>
+                            <span class="bg-gold/10 text-gold px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest">3 Conquistadas</span>
+                        </div>
+                        <div class="grid grid-cols-3 gap-6">
+                            <div class="flex flex-col items-center group">
+                                <div class="w-16 h-16 bg-navy/5 rounded-2xl flex items-center justify-center text-2xl group-hover:bg-gold transition-all duration-500 shadow-sm">🌱</div>
+                                <span class="mt-3 text-[9px] font-black uppercase text-gray-400 text-center">Iniciante</span>
+                            </div>
+                            <div class="flex flex-col items-center group">
+                                <div class="w-16 h-16 bg-navy/5 rounded-2xl flex items-center justify-center text-2xl group-hover:bg-gold transition-all duration-500 shadow-sm">💧</div>
+                                <span class="mt-3 text-[9px] font-black uppercase text-gray-400 text-center">Doador</span>
+                            </div>
+                            <div class="flex flex-col items-center group">
+                                <div class="w-16 h-16 bg-navy/5 rounded-2xl flex items-center justify-center text-2xl group-hover:bg-gold transition-all duration-500 shadow-sm">🌍</div>
+                                <span class="mt-3 text-[9px] font-black uppercase text-gray-400 text-center">Guardião</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Estatísticas e Impacto -->
+                <div class="lg:col-span-8 space-y-10">
+                    <div class="grid md:grid-cols-2 gap-10">
+                        <!-- Horas (Impacto Social) -->
+                        <div class="bg-navy rounded-[2.5rem] p-12 text-white relative overflow-hidden shadow-2xl group">
+                            <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-gold/10 rounded-full group-hover:scale-125 transition-all duration-700"></div>
+                            <div class="relative z-10">
+                                <div class="text-7xl font-black mb-4 tracking-tighter" id="usuario-horas">12h</div>
+                                <div class="text-[11px] font-black text-gold uppercase tracking-[0.3em]">Horas Contribuídas</div>
+                                <div class="mt-10 pt-8 border-t border-white/10 flex items-center gap-3 text-[10px] font-bold uppercase tracking-widest opacity-60">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                                    +4h nas últimas 2 semanas
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ações Realizadas -->
+                        <div class="bg-white rounded-[2.5rem] p-12 border border-gray-100 shadow-md flex items-center gap-8">
+                            <div class="w-20 h-20 bg-gold/10 rounded-[2rem] flex items-center justify-center text-gold shadow-inner">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            <div>
+                                <div class="text-5xl font-black text-navy tracking-tighter" id="usuario-acoes">03</div>
+                                <div class="text-[11px] font-black text-gray-400 uppercase tracking-widest">Ações Validadas</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Histórico Detalhado (Requisito RF09) -->
+                    <div class="bg-white rounded-[2.5rem] p-12 border border-gray-100 shadow-sm">
+                        <h3 class="font-black text-navy text-xs uppercase tracking-[0.3em] mb-12 border-b border-gray-50 pb-6">Relatório de Atividades</h3>
+                        <div class="space-y-8" id="lista-atividades">
+                            <!-- Atividades carregadas dinamicamente -->
+                        </div>
+                        <button class="w-full mt-14 py-5 bg-navy text-white text-[11px] font-black uppercase tracking-[0.4em] rounded-3xl hover:shadow-2xl transition-all">Baixar Certificado Unificado</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Modal Login/Cadastro -->
+    <div id="modal-auth" class="modal">
+        <div class="bg-white rounded-[2.5rem] p-10 max-w-md w-full mx-4 shadow-2xl relative">
+            <div class="text-center mb-8">
+                <h3 class="font-black text-2xl text-navy uppercase tracking-tighter">Acessar Ruralize</h3>
+                <p class="text-gray-400 text-sm mt-2">Entre ou crie sua conta gratuitamente</p>
+            </div>
+            
+            <div class="flex bg-gray-50 rounded-2xl p-1 mb-8">
+                <button id="tab-login" onclick="showAuthTab('login')" class="flex-1 py-3 rounded-xl bg-navy text-white text-xs font-black uppercase tracking-widest">Entrar</button>
+                <button id="tab-cadastro" onclick="showAuthTab('cadastro')" class="flex-1 py-3 rounded-xl text-gray-400 text-xs font-black uppercase tracking-widest">Cadastrar</button>
+            </div>
+            
+            <!-- Formulário Login -->
+            <form id="form-login" class="space-y-5">
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400 tracking-widest">Email Institucional</label>
+                    <input type="email" id="login-email" class="w-full mt-2 px-5 py-4 rounded-xl border border-gray-100 focus:border-gold outline-none" placeholder="seu.email@ufrpe.br">
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400 tracking-widest">Senha</label>
+                    <input type="password" id="login-senha" class="w-full mt-2 px-5 py-4 rounded-xl border border-gray-100 focus:border-gold outline-none" placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full btn-primary py-5 rounded-xl text-xs font-black uppercase tracking-widest">Entrar na Conta</button>
+            </form>
+            
+            <!-- Formulário Cadastro -->
+            <form id="form-cadastro" class="space-y-5 hidden">
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400 tracking-widest">Nome Completo</label>
+                    <input type="text" id="cadastro-nome" class="w-full mt-2 px-5 py-4 rounded-xl border border-gray-100 focus:border-gold outline-none" placeholder="Seu nome completo">
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400 tracking-widest">Email Institucional</label>
+                    <input type="email" id="cadastro-email" class="w-full mt-2 px-5 py-4 rounded-xl border border-gray-100 focus:border-gold outline-none" placeholder="seu.email@ufrpe.br">
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400 tracking-widest">Telefone</label>
+                    <input type="tel" id="cadastro-telefone" class="w-full mt-2 px-5 py-4 rounded-xl border border-gray-100 focus:border-gold outline-none" placeholder="(81) 9 9999-9999">
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400 tracking-widest">Senha</label>
+                    <input type="password" id="cadastro-senha" class="w-full mt-2 px-5 py-4 rounded-xl border border-gray-100 focus:border-gold outline-none" placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full btn-primary py-5 rounded-xl text-xs font-black uppercase tracking-widest">Criar Conta</button>
+            </form>
+            
+            <button onclick="fecharModal()" class="absolute top-6 right-6 text-gray-400 hover:text-navy text-xl">&times;</button>
+        </div>
+    </div>
+
+    <!-- Rodapé Institucional -->
+    <footer class="bg-navy text-white pt-32 pb-16 mt-20">
+        <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-4 gap-20 mb-24">
+            <div class="col-span-2">
+                <div class="flex items-center gap-4 mb-10">
+                    <div class="bg-gold p-2 rounded-lg text-navy font-black text-xl">R</div>
+                    <span class="font-black text-3xl tracking-tighter uppercase">Ruralize</span>
+                </div>
+                <p class="text-gray-400 text-base leading-relaxed max-w-sm font-medium">
+                    A plataforma que semeia transformação através do protagonismo estudantil. Orgulhosamente parte da UFRPE.
+                </p>
+            </div>
+            <div>
+                <h4 class="font-black mb-10 text-gold uppercase text-[11px] tracking-[0.4em]">Plataforma</h4>
+                <ul class="space-y-5 text-xs font-black uppercase tracking-widest text-gray-400">
+                    <li class="hover:text-gold transition-colors cursor-pointer">Causas Sociais</li>
+                    <li class="hover:text-gold transition-colors cursor-pointer">Painel de Horas</li>
+                    <li class="hover:text-gold transition-colors cursor-pointer">FAQ Aluno</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-black mb-10 text-gold uppercase text-[11px] tracking-[0.4em]">UFRPE</h4>
+                <ul class="space-y-5 text-xs font-black uppercase tracking-widest text-gray-400">
+                    <li>Pró-Reitoria de Extensão</li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 pt-12 border-t border-white/5 text-center text-[10px] text-gray-500 font-black uppercase tracking-[0.5em]">
+            RURALIZE • 2026 • UFRPE
+        </div>
+    </footer>
+
+    <script>
+        // Sistema de Navegação SPA Simples
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            
+            // Atualizar links de navegação
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active', 'text-navy');
+                link.classList.add('text-gray-400');
+            });
+            const activeNav = document.getElementById('nav-' + tabId);
+            if(activeNav) {
+                activeNav.classList.add('active', 'text-navy');
+                activeNav.classList.remove('text-gray-400');
+            }
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Modal Autenticação
+        function abrirModalAuth() {
+            document.getElementById('modal-auth').classList.add('active');
+        }
+        
+        function fecharModal() {
+            document.getElementById('modal-auth').classList.remove('active');
+        }
+        
+        function showAuthTab(tab) {
+            if(tab === 'login') {
+                document.getElementById('tab-login').classList.add('bg-navy', 'text-white');
+                document.getElementById('tab-login').classList.remove('text-gray-400');
+                document.getElementById('tab-cadastro').classList.remove('bg-navy', 'text-white');
+                document.getElementById('tab-cadastro').classList.add('text-gray-400');
+                document.getElementById('form-login').classList.remove('hidden');
+                document.getElementById('form-cadastro').classList.add('hidden');
+            } else {
+                document.getElementById('tab-cadastro').classList.add('bg-navy', 'text-white');
+                document.getElementById('tab-cadastro').classList.remove('text-gray-400');
+                document.getElementById('tab-login').classList.remove('bg-navy', 'text-white');
+                document.getElementById('tab-login').classList.add('text-gray-400');
+                document.getElementById('form-cadastro').classList.remove('hidden');
+                document.getElementById('form-login').classList.add('hidden');
+            }
+        }
+
+        // Função para carregar dados dinâmicos do usuário
+        async function carregarDadosUsuario() {
+            try {
+                const resposta = await fetch('/api/usuario/me');
+                const usuario = await resposta.json();
+                
+                // Atualiza perfil
+                document.getElementById('usuario-iniciais').textContent = usuario.iniciais;
+                document.getElementById('usuario-nome').textContent = usuario.nome;
+                document.getElementById('usuario-patente').textContent = usuario.patente;
+                document.getElementById('usuario-nivel').textContent = `Nível ${usuario.nivel}`;
+                document.getElementById('usuario-xp').textContent = `${usuario.xp_atual} / ${usuario.xp_proximo_nivel} XP`;
+                
+                const progresso = (usuario.xp_atual / usuario.xp_proximo_nivel) * 100;
+                document.getElementById('progress-bar').style.width = `${progresso}%`;
+                document.getElementById('usuario-xp-faltante').textContent = `Faltam ${usuario.xp_proximo_nivel - usuario.xp_atual} XP para o Nível ${usuario.nivel + 1}`;
+                
+                // Atualiza estatísticas
+                document.getElementById('usuario-horas').textContent = `${usuario.horas_contribuidas}h`;
+                document.getElementById('usuario-acoes').textContent = String(usuario.acoes_validadas).padStart(2, '0');
+                
+                // Renderiza atividades
+                const containerAtividades = document.getElementById('lista-atividades');
+                containerAtividades.innerHTML = usuario.atividades.map(a => `
+                    <div class="flex items-center justify-between group cursor-pointer hover:bg-gray-50 p-4 rounded-3xl transition-all">
+                        <div class="flex items-center gap-6">
+                            <div class="w-14 h-14 bg-navy/5 rounded-[1.25rem] flex items-center justify-center text-navy font-black shadow-sm group-hover:bg-gold transition-colors">${a.icone}</div>
+                            <div>
+                                <div class="font-black text-navy text-sm uppercase tracking-tight">${a.titulo}</div>
+                                <div class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">${a.data} • ${a.local}</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm font-black text-navy">+${a.xp} XP</div>
+                            <div class="text-[9px] font-black text-gold uppercase tracking-widest">${a.horas} Horas</div>
+                        </div>
+                    </div>
+                `).join('');
+                
+            } catch (erro) {
+                console.error('Erro ao carregar dados do usuário:', erro);
+            }
+        }
+
+        // Funções de Autenticação
+        async function fazerLogin(email, senha) {
+            const resposta = await fetch('/api/usuario/login', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email, senha})
+            });
+            
+            if(resposta.ok) {
+                fecharModal();
+                document.getElementById('btn-login').classList.add('hidden');
+                document.getElementById('btn-profile').classList.remove('hidden');
+                await carregarDadosUsuario();
+                showTab('dashboard');
+            } else {
+                alert('Email ou senha inválidos');
+            }
+        }
+
+        async function fazerCadastro(nome, email, telefone, senha) {
+            const resposta = await fetch('/api/usuario/cadastro', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({nome, email, telefone, senha})
+            });
+            
+            if(resposta.ok) {
+                fecharModal();
+                document.getElementById('btn-login').classList.add('hidden');
+                document.getElementById('btn-profile').classList.remove('hidden');
+                await carregarDadosUsuario();
+                showTab('dashboard');
+            } else {
+                alert('Este email já está cadastrado');
+            }
+        }
+
+        // Eventos dos formulários
+        document.getElementById('form-login').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await fazerLogin(
+                document.getElementById('login-email').value,
+                document.getElementById('login-senha').value
+            );
+        });
+
+        document.getElementById('form-cadastro').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await fazerCadastro(
+                document.getElementById('cadastro-nome').value,
+                document.getElementById('cadastro-email').value,
+                document.getElementById('cadastro-telefone').value,
+                document.getElementById('cadastro-senha').value
+            );
+        });
+
+        // Dados de Projetos
+        const projects = [
+            { title: "Monitoria Social: Matemática", cat: "Educação", xp: 80, h: 4, img: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=400" },
+            { title: "Reflorestamento Campus", cat: "Meio Ambiente", xp: 120, h: 6, img: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&q=80&w=400" },
+            { title: "Horta Urbana Ipsep", cat: "Meio Ambiente", xp: 60, h: 3, img: "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=400" },
+            { title: "Apoio Digital Idosos", cat: "Tecnologia", xp: 100, h: 5, img: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=400" }
+        ];
+
+        // Renderização Dinâmica (Requisito RF02)
+        function renderProjects() {
+            const list = document.getElementById('catalog-list');
+            list.innerHTML = projects.map(p => `
+                <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm overflow-hidden group hover:shadow-2xl transition-all">
+                    <div class="h-44 bg-gray-200 relative overflow-hidden">
+                        <img src="${p.img}" class="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" alt="">
+                        <div class="absolute top-4 left-4 bg-white/95 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest text-navy">${p.cat}</div>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="font-black text-navy text-sm mb-2 uppercase tracking-tight leading-tight h-10 line-clamp-2">${p.title}</h3>
+                        <div class="flex justify-between items-center mt-6 border-t border-gray-50 pt-5">
+                            <span class="text-[10px] font-black text-gray-300 uppercase tracking-widest">${p.h}h de Impacto</span>
+                            <span class="text-gold font-black text-[11px] tracking-widest">+${p.xp} XP</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', renderProjects);
+    </script>
+</body>
+</html>
